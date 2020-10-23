@@ -12,3 +12,8 @@
 ```console
     ./freq in out
 ```
+
+Можно еще сделать все внутри docker-а, но наcker-а?
+```console
+    ./docker_freq in out
+```
