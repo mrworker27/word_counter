@@ -108,6 +108,7 @@ int dump_table(struct hash_table_node * table, buffer_t * out) {
             }
         }
     }
+    return 0;
 }
 
 int32_t lower_bound_prime(int32_t bound) {
