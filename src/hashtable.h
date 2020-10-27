@@ -6,7 +6,6 @@ int32_t MOD1  = 64000031;
 
 uint32_t hash(char * word, int32_t len, uint32_t base, uint32_t modulo) {
     uint32_t hash = 0ll;
-    char letter;
     for (int32_t i = 0; i < len; ++i) {
         hash += (1 + word[i] - 'a');
         hash *= base;
