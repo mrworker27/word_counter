@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include <errno.h>
 #include <string.h>
 
 #include <inttypes.h>
@@ -134,12 +135,12 @@ int main(int arc, char ** argv) {
     int out_fd = open(out_file, O_RDWR | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
     
     if (inp_fd == -1) {
-        fprintf(stderr, "Cannot open inp file\n");
+        fprintf(stderr, "Cannot open inp file\n%s\n", strerror(errno));
         return -1;
     }
     
     if (out_fd == -1) {
-        fprintf(stderr, "Cannot open out file\n");
+        fprintf(stderr, "Cannot open out file\n%s\n", strerror(errno));
         return -1;
     }
     
@@ -147,13 +148,13 @@ int main(int arc, char ** argv) {
     buffer_t * buffer_out = calloc(1, sizeof(buffer_t));
     
     if (buffer_inp == NULL || buffer_out == NULL) {
-        fprintf(stderr, "Cannot allocate memory for buffer_t\n");
+        fprintf(stderr, "Cannot allocate memory for buffer_t\n%s\n", strerror(errno));
         return -1;
     }
     struct stat file_stats;
     
     if (fstat(inp_fd, &file_stats) == -1) {
-        fprintf(stderr, "Cannot read file stats\n");
+        fprintf(stderr, "Cannot read file stats\n%s\n", strerror(errno));
         
         free(buffer_inp);
         free(buffer_out);
@@ -175,7 +176,7 @@ int main(int arc, char ** argv) {
     }
     
     if (buffer_inp->data == NULL || buffer_out->data == NULL) {
-        fprintf(stderr, "Cannot allocate memory for input / output\n");
+        fprintf(stderr, "Cannot allocate memory for input / output\n%s\n", strerror(errno));
         free(buffer_inp->data);
         free(buffer_out->data);
 
@@ -189,7 +190,7 @@ int main(int arc, char ** argv) {
     
     // reading from file to buffer
     if (read_to_buffer_from_file(buffer_inp) == -1) {
-        fprintf(stderr, "read error\n");
+        fprintf(stderr, "read error\n%s\n", strerror(errno));
         
         free(buffer_inp->data);
         free(buffer_out->data);
@@ -211,13 +212,13 @@ int main(int arc, char ** argv) {
     struct hash_table_node * hash_table = calloc(MOD1, sizeof(struct hash_table_node));
     
     if (hash_table == NULL) {
-        fprintf(stderr, "Cannot allocate memory for hash_table\n");
+        fprintf(stderr, "Cannot allocate memory for hash_table\n%s\n", strerror(errno));
     } else if (feed_table(buffer_inp, &hash_table[0]) == -1) {
-        fprintf(stderr, "Error while writing to hash table\n");
+        fprintf(stderr, "Error while writing to hash table\n%s\n", strerror(errno));
     } else if (dump_table(hash_table, buffer_out) == -1) {
-        fprintf(stderr, "Error while writing output\n");
+        fprintf(stderr, "Error while writing output\n%s\n", strerror(errno));
     } else if (write_from_buffer_to_file(buffer_out) == -1) {
-        fprintf(stderr, "Error while writing output\n");
+        fprintf(stderr, "Error while writing output\n%s\n", strerror(errno));
     }
     
     // free dynamic memory
