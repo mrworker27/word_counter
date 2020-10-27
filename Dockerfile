@@ -7,4 +7,4 @@ COPY . .
 RUN apk add make && \
     make build
 
-CMD ./freq in out 2> /dev/null && cat out
+CMD ./freq in_tmp_file_27 out 2> /dev/null && cat out
