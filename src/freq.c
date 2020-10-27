@@ -39,6 +39,7 @@ int feed_table(buffer_t * inp_env_buffer, struct hash_table_node * table) {
                         return -1;
                     }
                 }
+
                 opened = 0;
                 word_len = 0;
             } else {
@@ -159,10 +160,12 @@ int main(int arc, char ** argv) {
         return -1;
     }
     size_t inp_size = file_stats.st_size;
-
+    
+    ++inp_size;
     buffer_inp->size = inp_size;
 
     buffer_inp->data = calloc(inp_size, sizeof(char));
+    buffer_inp->data[inp_size - 1] = ' ';
 
     size_t out_size = inp_size;
     while (buffer_out->data == NULL && out_size > 0) {
@@ -199,7 +202,7 @@ int main(int arc, char ** argv) {
     
     // optimal hash table size choice
     
-    int candidate = lower_bound_prime(BUCKETS_PER_WORD * count_words(buffer_inp));
+    int candidate = lower_bound_prime(BUCKETS_PER_WORD * (count_words(buffer_inp) + 1000));
     
     if (candidate < MOD1) {
         MOD1 = candidate;
